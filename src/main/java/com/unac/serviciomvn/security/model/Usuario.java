@@ -6,7 +6,6 @@
 package com.unac.serviciomvn.security.model;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -21,7 +20,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -64,13 +62,13 @@ public class Usuario implements Serializable {
     @Column(name = "estado_contrato")
     private Boolean estadoContrato;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idUsuario")
     @JsonIgnore
-    private Collection<Empleado> empleadoCollection;
+    private Empleado empleado;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idUsuario")
     @JsonIgnore
-    private Collection<Propietario> propietarioCollection;
+    private Propietario propietario;
     
     
     @NotNull

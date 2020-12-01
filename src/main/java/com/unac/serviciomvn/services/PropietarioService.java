@@ -39,7 +39,16 @@ public class PropietarioService {
     public boolean existsById(int id){
         return propietarioRepository.existsById(id);
     }
-    public List<Propietario> findByParameters(String cedula,String nombre,String apellidos){
-        return propietarioRepository.findByCedulaIsContainingAndNombreIsContainingAndApellidosIsContaining(cedula,nombre,apellidos);
+    public List<Propietario> findByParameters(String cedula,String nombre){
+        return propietarioRepository.findByCedulaIsContainingAndNombreIsContaining(cedula,nombre);
+    }
+    public boolean existsByEmail(String email){
+        return propietarioRepository.existsByEmail(email);
+    }
+    public boolean existsByTelefono(String telefono){
+        return propietarioRepository.existsByTelefono(telefono);
+    }
+    public boolean existsByCedula(String cedula){
+        return propietarioRepository.existsByCedula(cedula);
     }
 }

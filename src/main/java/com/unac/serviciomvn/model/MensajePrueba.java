@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
+@SuppressWarnings("serial")
 @Entity
 @Data
 @Table(name = "mensaje")

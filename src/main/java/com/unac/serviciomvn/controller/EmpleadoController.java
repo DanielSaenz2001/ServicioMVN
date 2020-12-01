@@ -21,6 +21,7 @@ import com.unac.serviciomvn.services.EmpleadoService;
 @RestController
 @RequestMapping("/empleado")
 @CrossOrigin(origins = "*")
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class EmpleadoController {
 	@Autowired
     EmpleadoService empleadoService;
@@ -35,35 +36,38 @@ public class EmpleadoController {
 	@GetMapping("/detail/{id}")
     public ResponseEntity<Empleado> getById(@PathVariable("id") int id){
         if(!empleadoService.existsById(id))
-            return new ResponseEntity(new Mensaje("mensaje no encontrado"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new Mensaje("No existe nadie con ese ID"), HttpStatus.NOT_FOUND);
         Empleado empleado = empleadoService.getOne(id).get();
         return new ResponseEntity(empleado, HttpStatus.OK);
     }
 	@PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody Empleado empleadoModel){
 		
-		/*Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    	Optional<Usuario> user = usuarioService.getByNombreUsuario(auth.getName());
-    	Integer iduser = user.flatMap(Usuario::getId).orElse(0);*/
+		if(empleadoService.existsByCedula(empleadoModel.getCedula()))
+			return new ResponseEntity(new Mensaje("Ya existe esa cedula registrada"), HttpStatus.NOT_FOUND);
+		if(empleadoService.existsByEmail(empleadoModel.getEmail()))
+			return new ResponseEntity(new Mensaje("Ya existe ese email registrado"), HttpStatus.NOT_FOUND);
+		if(empleadoService.existsByTelefono(empleadoModel.getTelefono()))
+			return new ResponseEntity(new Mensaje("Ya existe ese telefono registrado"), HttpStatus.NOT_FOUND);
 		
-		/*empleadoModel.setNombre();
-		empleadoModel.setCedula();
-		empleadoModel.setApellidos();
-		empleadoModel.setEmail();
-		empleadoModel.setTelefono();
-		empleadoModel.setIdUsuario();*/
-		
-		System.out.println(empleadoModel);
 		empleadoService.save(empleadoModel);
-        return new ResponseEntity(new Mensaje("producto creado"), HttpStatus.OK);
+        return new ResponseEntity(new Mensaje("Empleado Registrado Exitosamente"), HttpStatus.OK);
     }
 	@PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable("id")int id, @RequestBody Empleado empleadoModel){
 		
-		Empleado empleado = empleadoService.getOne(id).get();
+		
     	if(!empleadoService.existsById(id))
-            return new ResponseEntity(new Mensaje("no existe"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new Mensaje("No existe nadie con ese ID"), HttpStatus.NOT_FOUND);
+    	Empleado empleado = empleadoService.getOne(id).get();
     	
+    	if(empleadoService.existsByCedula(empleadoModel.getCedula()) && !( empleado.getCedula().contentEquals(empleadoModel.getCedula()))  )
+			return new ResponseEntity(new Mensaje("Ya existe esa cedula registrada"), HttpStatus.NOT_FOUND);
+		if(empleadoService.existsByEmail(empleadoModel.getEmail()) && !(empleado.getEmail().contentEquals(empleadoModel.getEmail()) )  )
+			return new ResponseEntity(new Mensaje("Ya existe ese email registrado"), HttpStatus.NOT_FOUND);
+		if(empleadoService.existsByTelefono(empleadoModel.getTelefono())  && !(empleado.getTelefono().contentEquals(empleadoModel.getTelefono()))  )
+			return new ResponseEntity(new Mensaje("Ya existe ese telefono registrado"), HttpStatus.NOT_FOUND);
+		
     	empleado.setNombre(empleadoModel.getNombre());
     	empleado.setCedula(empleadoModel.getCedula());
     	empleado.setApellidos(empleadoModel.getApellidos());
@@ -75,7 +79,7 @@ public class EmpleadoController {
     }
 	@PostMapping("/filtrar")
 	public ResponseEntity<List<Empleado>> filtroNombre(@RequestBody Empleado empleado){
-		List<Empleado> list = empleadoService.findByParameters(empleado.getCedula(), empleado.getNombre(), empleado.getApellidos());
+		List<Empleado> list = empleadoService.findByParameters(empleado.getCedula(), empleado.getNombre());
 		return new ResponseEntity(list, HttpStatus.OK);
     }
 }

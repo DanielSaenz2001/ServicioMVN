@@ -1,25 +1,25 @@
 package com.unac.serviciomvn.model;
 
+import java.io.Serializable;
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collection;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
-import com.unac.serviciomvn.security.model.Rol;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unac.serviciomvn.security.model.Usuario;
 
 import lombok.Data;
@@ -27,7 +27,9 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "Propietario")
-public class Propietario {
+public class Propietario implements Serializable {
+	
+		private static final long serialVersionUID = 1L;
 		@Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    @Basic(optional = false)
@@ -59,7 +61,10 @@ public class Propietario {
 	    @Column(name = "email")       
 	    private String email;
 	    
-
+	    @Basic(optional = false)
+	    @Null
+	    @Column(name = "password")       
+	    private String password;
 
 	    @Basic(optional = false)
 	    @NotNull
@@ -71,29 +76,32 @@ public class Propietario {
 	    @Column(name = "fecha_actualizacion")       
 	    private Date fechaActualizacion;
 	    
-	    @JoinColumn(name = "usuario_creacion", referencedColumnName = "id_usuario")
+	    @JoinColumn(name = "usuario_creacion", referencedColumnName = "id_empleado")
 	    @ManyToOne(optional = false)
-	    private Usuario usuarioCreacion;
+	    private Empleado usuarioCreacion;
 	    
-	    @JoinColumn(name = "usuario_actualizacion", referencedColumnName = "id_usuario")
+	    @JoinColumn(name = "usuario_actualizacion", referencedColumnName = "id_empleado")
 	    @ManyToOne(optional = false)
-	    private Usuario usuarioActualizacion;
+	    private Empleado usuarioActualizacion;
 
 	    
 	    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
-	    @ManyToOne(optional = false)
+	    @OneToOne(optional = false)
 	    private Usuario idUsuario;
+
+
+	    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPropietario")
+	    @JsonIgnore
+	    private Collection<PropietarioVehiculo> propietarioVehiculoCollection;
 	    
-	    @NotNull
-	    @ManyToMany(fetch = FetchType.EAGER)
-	    @JoinTable(name = "propietarios_vehiculos", joinColumns = @JoinColumn(name = "id_propietario"),
-	    inverseJoinColumns = @JoinColumn(name = "id_vehiculo"))
-	    private Set<Vehiculo> vehiculos = new HashSet<>();
 	    
-	    public Propietario(@NotNull String nombre, @NotNull String apellidos, @NotNull String cedula,
+	    
+	    
+	    
+		public Propietario(@NotNull String nombre, @NotNull String apellidos, @NotNull String cedula,
 				@NotNull String telefono, @NotNull String email, @NotNull Date fechaCreacion,
-				@NotNull Date fechaActualizacion, Usuario usuarioCreacion,
-				Usuario usuarioActualizacion, Usuario idUsuario) {
+				@NotNull Date fechaActualizacion, Empleado usuarioCreacion,
+				Empleado usuarioActualizacion, Usuario idUsuario, @Null String password) {
 			this.nombre = nombre;
 			this.apellidos = apellidos;
 			this.cedula = cedula;
@@ -104,6 +112,7 @@ public class Propietario {
 			this.usuarioCreacion = usuarioCreacion;
 			this.usuarioActualizacion = usuarioActualizacion;
 			this.idUsuario = idUsuario;
+			this.password = password;
 		}
 
 		public int getIdPropietario() {
@@ -129,6 +138,14 @@ public class Propietario {
 		}
 
 
+
+		public String getPassword() {
+			return password;
+		}
+
+		public void setPassword(String password) {
+			this.password = password;
+		}
 
 		public String getTelefono() {
 			return telefono;
@@ -196,19 +213,19 @@ public class Propietario {
 			this.fechaActualizacion = fechaActualizacion;
 		}
 
-		public Usuario getUsuarioCreacion() {
+		public Empleado getUsuarioCreacion() {
 			return usuarioCreacion;
 		}
 
-		public void setUsuarioCreacion(Usuario usuarioCreacion) {
+		public void setUsuarioCreacion(Empleado usuarioCreacion) {
 			this.usuarioCreacion = usuarioCreacion;
 		}
 
-		public Usuario getUsuarioActualizacion() {
+		public Empleado getUsuarioActualizacion() {
 			return usuarioActualizacion;
 		}
 
-		public void setUsuarioActualizacion(Usuario usuarioActualizacion) {
+		public void setUsuarioActualizacion(Empleado usuarioActualizacion) {
 			this.usuarioActualizacion = usuarioActualizacion;
 		}
 }

@@ -1,18 +1,22 @@
 package com.unac.serviciomvn.model;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unac.serviciomvn.security.model.Usuario;
 
 import lombok.Data;
@@ -21,7 +25,9 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "Empleado")
-public class Empleado {
+public class Empleado implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -61,9 +67,20 @@ public class Empleado {
     private String cedula;
     
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     private Usuario idUsuario;
     
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioCreacion")
+    @JsonIgnore
+    private Collection<Propietario> propietarioCreateCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioActualizacion")
+    @JsonIgnore
+    private Collection<Propietario> propietarioUpdateCollection;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioCreacion")
+    @JsonIgnore
+    private Collection<Vehiculo> vehiculoCollection;
     
     
     public Empleado(@NotNull String nombre, @NotNull String apellidos, @NotNull String telefono, @NotNull String cedula,

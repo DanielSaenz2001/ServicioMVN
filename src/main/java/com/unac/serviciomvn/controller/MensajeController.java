@@ -2,20 +2,15 @@ package com.unac.serviciomvn.controller;
 
 
 import java.util.List;
-import java.util.Optional;
-
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import com.unac.serviciomvn.dto.Mensaje;
 import com.unac.serviciomvn.model.MensajePrueba;
 import com.unac.serviciomvn.model.MensajeUsuario;
-import com.unac.serviciomvn.security.controller.AuthController;
 import com.unac.serviciomvn.security.model.Usuario;
 import com.unac.serviciomvn.security.service.UsuarioService;
 import com.unac.serviciomvn.services.MensajeService;
@@ -24,6 +19,7 @@ import com.unac.serviciomvn.services.MensajeService;
 @RestController
 @RequestMapping("/mensaje")
 @CrossOrigin(origins = "*")
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class MensajeController {
 		@Autowired
 	    MensajeService mensajeService;
@@ -53,8 +49,8 @@ public class MensajeController {
 	    public ResponseEntity<?> create(@RequestBody MensajePrueba mensajeModel){
 			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    	Optional<Usuario> user = usuarioService.getByNombreUsuario(auth.getName());
-	    	Integer iduser = user.flatMap(Usuario::getId).orElse(0);
+	    	Usuario user = usuarioService.getByNombreUsuario(auth.getName());
+	    	Integer iduser = user.getIdUsuario();
 			
 			mensajeModel.setIdUser(iduser);	
 			mensajeService.save(mensajeModel);
@@ -65,8 +61,8 @@ public class MensajeController {
 			
 			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    	Optional<Usuario> user = usuarioService.getByNombreUsuario(auth.getName());
-	    	Integer iduser = user.flatMap(Usuario::getId).orElse(0);
+	    	Usuario user = usuarioService.getByNombreUsuario(auth.getName());
+	    	Integer iduser = user.getIdUsuario();
 			
 			
 			MensajePrueba mensaje = mensajeService.getOne(id).get();

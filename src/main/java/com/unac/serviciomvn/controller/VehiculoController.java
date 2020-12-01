@@ -21,6 +21,7 @@ import com.unac.serviciomvn.services.VehiculoService;
 @RestController
 @RequestMapping("/vehiculo")
 @CrossOrigin(origins = "*")
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class VehiculoController {
 	@Autowired
 	VehiculoService vehiculoService;
@@ -36,7 +37,7 @@ public class VehiculoController {
 	@GetMapping("/detail/{id}")
     public ResponseEntity<Vehiculo> getById(@PathVariable("id") int id){
         if(!vehiculoService.existsById(id))
-            return new ResponseEntity(new Mensaje("mensaje no encontrado"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new Mensaje("No existe nadie con ese ID"), HttpStatus.NOT_FOUND);
         Vehiculo vehiculo = vehiculoService.getOne(id).get();
         return new ResponseEntity(vehiculo, HttpStatus.OK);
     }
@@ -45,8 +46,13 @@ public class VehiculoController {
 		
     	
     	if(!vehiculoService.existsById(id))
-            return new ResponseEntity(new Mensaje("no existe"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new Mensaje("No existe nadie con ese ID"), HttpStatus.NOT_FOUND);
     	Vehiculo vehiculo = vehiculoService.getOne(id).get();
+    	
+    	if(vehiculoService.existsByPlaca(vehiculoModel.getPlaca()) && !(vehiculo.getPlaca().contentEquals(vehiculoModel.getPlaca()))  )
+			return new ResponseEntity(new Mensaje("Ya existe la placa registrada"), HttpStatus.NOT_FOUND);
+		
+    	
     	
     	vehiculo.setColor(vehiculoModel.getColor());
     	vehiculo.setFechaActualizacion(vehiculoModel.getFechaActualizacion());
@@ -63,6 +69,8 @@ public class VehiculoController {
     }
 	@PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody Vehiculo vehiculo){
+		if(vehiculoService.existsByPlaca(vehiculo.getPlaca()))
+			return new ResponseEntity(new Mensaje("Ya existe la placa registrada"), HttpStatus.NOT_FOUND);
 
 		vehiculoService.save(vehiculo);
         return new ResponseEntity(vehiculo, HttpStatus.OK);
@@ -72,11 +80,4 @@ public class VehiculoController {
 		List<Vehiculo> list = vehiculoService.findByPlaca(vehiculo.getPlaca());
 		return new ResponseEntity(list, HttpStatus.OK);
     }
-	/*@DeleteMapping("/delete")
-	public ResponseEntity<?> delete(@PathVariable("id")int id){
-		if(!propietarioService.existsById(id))
-            return new ResponseEntity(new Mensaje("no existe"), HttpStatus.NOT_FOUND);
-		propietarioService.delete(id);
-        return new ResponseEntity(new Mensaje("producto creado"), HttpStatus.OK);
-    }*/
 }

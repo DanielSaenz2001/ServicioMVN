@@ -1,8 +1,10 @@
 package com.unac.serviciomvn.model;
 
 import java.sql.Date;
+import java.util.Collection;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,10 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.unac.serviciomvn.security.model.Usuario;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -67,17 +70,21 @@ public class Vehiculo {
     @Column(name = "fecha_actualizacion")       
     private Date fechaActualizacion;
     
-    @JoinColumn(name = "usuario_creacion", referencedColumnName = "id_usuario")
+    @JoinColumn(name = "usuario_creacion", referencedColumnName = "id_empleado")
     @ManyToOne(optional = false)     
-    private Usuario usuarioCreacion;
+    private Empleado usuarioCreacion;
     
-    @JoinColumn(name = "usuario_actualizacion", referencedColumnName = "id_usuario")
+    @JoinColumn(name = "usuario_actualizacion", referencedColumnName = "id_empleado")
     @ManyToOne(optional = false)    
-    private Usuario usuarioActualizacion;
+    private Empleado usuarioActualizacion;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idVehiculo")
+    @JsonIgnore
+    private Collection<PropietarioVehiculo> propietarioVehiculoCollection;
+    
 	public Vehiculo(@NotNull String marca, @NotNull String modelo, @NotNull String color, @NotNull String placa,
 			@NotNull String imagenVehiculo,@NotNull String tipo, @NotNull Date fechaCreacion, 
-			@NotNull Date fechaActualizacion,Usuario usuarioCreacion, Usuario usuarioActualizacion) {
+			@NotNull Date fechaActualizacion,Empleado usuarioCreacion, Empleado usuarioActualizacion) {
 		this.marca = marca;
 		this.modelo = modelo;
 		this.color = color;
@@ -161,19 +168,19 @@ public class Vehiculo {
 		this.fechaActualizacion = fechaActualizacion;
 	}
 
-	public Usuario getUsuarioCreacion() {
+	public Empleado getUsuarioCreacion() {
 		return usuarioCreacion;
 	}
 
-	public void setUsuarioCreacion(Usuario usuarioCreacion) {
+	public void setUsuarioCreacion(Empleado usuarioCreacion) {
 		this.usuarioCreacion = usuarioCreacion;
 	}
 
-	public Usuario getUsuarioActualizacion() {
+	public Empleado getUsuarioActualizacion() {
 		return usuarioActualizacion;
 	}
 
-	public void setUsuarioActualizacion(Usuario usuarioActualizacion) {
+	public void setUsuarioActualizacion(Empleado usuarioActualizacion) {
 		this.usuarioActualizacion = usuarioActualizacion;
 	}
     

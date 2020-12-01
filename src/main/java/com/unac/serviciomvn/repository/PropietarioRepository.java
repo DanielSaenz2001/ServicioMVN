@@ -6,10 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.unac.serviciomvn.model.Propietario;
-import com.unac.serviciomvn.model.Vehiculo;
 
 @Repository
 public interface PropietarioRepository extends JpaRepository<Propietario, Integer> {
-	List<Propietario> findByCedulaIsContainingAndNombreIsContainingAndApellidosIsContaining(String cedula,String nombre,String apellidos);
+	List<Propietario> findByCedulaIsContainingAndNombreIsContaining(String cedula,String nombre);
     List<Propietario> findByIdPropietario(int idVehiculo);
+    boolean existsByEmail(String email);
+    boolean existsByCedula(String cedula);
+    boolean existsByTelefono(String telefono);
 }

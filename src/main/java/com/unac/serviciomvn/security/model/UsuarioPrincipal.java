@@ -8,13 +8,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.validation.constraints.NotNull;
 
+@SuppressWarnings({"serial","unused"})
 public class UsuarioPrincipal implements UserDetails {
     private String nombreUsuario;
     private String password;
     private String imagenUser;
-    private Boolean estadoContrato;
+	private Boolean estadoContrato;
     private Collection<? extends GrantedAuthority> authorities;
 
     public UsuarioPrincipal(String nombreUsuario, String password, String imagenUser

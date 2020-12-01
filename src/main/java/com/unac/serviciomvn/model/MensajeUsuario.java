@@ -2,8 +2,9 @@ package com.unac.serviciomvn.model;
 
 import java.io.Serializable;
 
-import lombok.Data;
 
+import lombok.Data;
+@SuppressWarnings({"serial","unused"})
 @Data
 public class MensajeUsuario  implements  Serializable{
 	private String mensaje;

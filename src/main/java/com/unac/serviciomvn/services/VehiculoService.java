@@ -22,6 +22,10 @@ public class VehiculoService {
     public Optional<Vehiculo> getOne(int id){
         return vehiculoRepository.findById(id);
     }
+    
+    public Vehiculo findById(int id){
+        return vehiculoRepository.findId(id);
+    }
 
     public void save(Vehiculo vehiculo){
     	vehiculoRepository.save(vehiculo);
@@ -39,5 +43,8 @@ public class VehiculoService {
     }
     public List<Vehiculo> findByPlaca(String placa){
         return vehiculoRepository.findByPlacaIsContaining(placa);
+    }
+    public boolean existsByPlaca(String placa){
+        return vehiculoRepository.existsByPlaca(placa);
     }
 }
