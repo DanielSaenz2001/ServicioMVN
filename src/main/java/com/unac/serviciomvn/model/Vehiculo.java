@@ -82,6 +82,11 @@ public class Vehiculo {
     @JsonIgnore
     private Collection<PropietarioVehiculo> propietarioVehiculoCollection;
     
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idVehiculoFactura")
+    @JsonIgnore
+    private Collection<VehiculoReparacion> VehiculoReparacionCollection;
+    
+    
 	public Vehiculo(@NotNull String marca, @NotNull String modelo, @NotNull String color, @NotNull String placa,
 			@NotNull String imagenVehiculo,@NotNull String tipo, @NotNull Date fechaCreacion, 
 			@NotNull Date fechaActualizacion,Empleado usuarioCreacion, Empleado usuarioActualizacion) {

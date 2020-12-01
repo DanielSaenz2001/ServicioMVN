@@ -95,8 +95,14 @@ public class Propietario implements Serializable {
 	    private Collection<PropietarioVehiculo> propietarioVehiculoCollection;
 	    
 	    
+	    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPropietarioFactura")
+	    @JsonIgnore
+	    private Collection<VehiculoReparacion> PropietarioReparacionCollection;
 	    
 	    
+	    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPropietarioDetalle")
+	    @JsonIgnore
+	    private Collection<DetallesReparacion> PropietarioDetallesReparacionCollection;
 	    
 		public Propietario(@NotNull String nombre, @NotNull String apellidos, @NotNull String cedula,
 				@NotNull String telefono, @NotNull String email, @NotNull Date fechaCreacion,

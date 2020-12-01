@@ -82,6 +82,13 @@ public class Empleado implements Serializable {
     @JsonIgnore
     private Collection<Vehiculo> vehiculoCollection;
     
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEmpleadoFactura")
+    @JsonIgnore
+    private Collection<VehiculoReparacion> VehiculoReparacionCollection;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEmpleadoDetalle")
+    @JsonIgnore
+    private Collection<DetallesReparacion> EmpleadoDetallesReparacionCollection;
     
     public Empleado(@NotNull String nombre, @NotNull String apellidos, @NotNull String telefono, @NotNull String cedula,
     		@NotNull Usuario idUsuario,@NotNull String email) {
