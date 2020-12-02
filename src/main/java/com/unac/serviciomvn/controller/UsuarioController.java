@@ -65,6 +65,16 @@ public class UsuarioController {
     	usuarioService.save(usuario);
         return new ResponseEntity(usuario, HttpStatus.OK);
     }
+	@PutMapping("/update/noadmin/{id}")
+    public ResponseEntity<?> updateNoAdmin(@PathVariable("id")int id, @RequestBody Usuario usuarioModel){
+		
+    	Usuario usuario = usuarioService.getOne(id).get();
+    	if(!usuarioService.existsById(id))
+            return new ResponseEntity(new Mensaje("No existe nadie con ese ID"), HttpStatus.NOT_FOUND);
+    	usuario.setImagenUser(usuarioModel.getImagenUser());
+    	usuarioService.save(usuario);
+        return new ResponseEntity(usuario, HttpStatus.OK);
+    }
 	@PostMapping("/filtrar")
 	public ResponseEntity<List<Usuario>> filtroNombre(@RequestBody Usuario usuarioModel){
 		Usuario list = usuarioService.getByNombreUsuario(usuarioModel.getNombreUsuario());

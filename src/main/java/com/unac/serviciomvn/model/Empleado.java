@@ -90,6 +90,14 @@ public class Empleado implements Serializable {
     @JsonIgnore
     private Collection<DetallesReparacion> EmpleadoDetallesReparacionCollection;
     
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEmpleadoServicio")
+    @JsonIgnore
+    private Collection<ServicioReparacion> ServicioReparacionCollection;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEmpleadoReporte")
+    @JsonIgnore
+    private Collection<Reportes> ServicioReporteCollection;
+    
     public Empleado(@NotNull String nombre, @NotNull String apellidos, @NotNull String telefono, @NotNull String cedula,
     		@NotNull Usuario idUsuario,@NotNull String email) {
 		this.nombre = nombre;

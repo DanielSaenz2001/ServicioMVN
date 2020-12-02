@@ -38,7 +38,8 @@ public class ServicioRepuestos implements Serializable {
 	@JoinColumn(name = "id_reparacion", referencedColumnName = "id_respuesto")
     @ManyToOne(optional = false)
     private RepuestosReparacion idRespuesto;
-
+	public ServicioRepuestos() {
+	}
 	public ServicioRepuestos(@NotNull ServicioReparacion idServicio, int descuentoRespuesto,
 			@NotNull RepuestosReparacion idRespuesto) {
 		this.idServicio = idServicio;

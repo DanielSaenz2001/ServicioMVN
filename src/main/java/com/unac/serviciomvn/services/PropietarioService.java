@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.unac.serviciomvn.model.Empleado;
 import com.unac.serviciomvn.model.Propietario;
 import com.unac.serviciomvn.repository.PropietarioRepository;
+import com.unac.serviciomvn.security.model.Usuario;
 
 @Service
 @Transactional
@@ -27,7 +29,9 @@ public class PropietarioService {
     /*public Optional<Mensaje> getByNombre(String nombre){
         return mensajeRepository.findByNombre(nombre);
     }*/
-
+    public boolean existsByPropietario(Usuario id_usuario){
+        return propietarioRepository.existsByIdUsuario(id_usuario);
+    }
     public void save(Propietario propietario){
     	propietarioRepository.save(propietario);
     }
@@ -50,5 +54,8 @@ public class PropietarioService {
     }
     public boolean existsByCedula(String cedula){
         return propietarioRepository.existsByCedula(cedula);
+    }
+    public Propietario getPropietarioById(Usuario id_usuario){
+        return propietarioRepository.findByIdUsuario(id_usuario);
     }
 }

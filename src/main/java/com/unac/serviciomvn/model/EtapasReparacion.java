@@ -37,7 +37,17 @@ public class EtapasReparacion implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "idEtapaReparacion")
 	@JsonIgnore
 	private Collection<DetallesReparacion> DetallesReparacionCollection;
-	
+	public EtapasReparacion() {
+	}
+
+	public int getIdEtapas() {
+		return idEtapas;
+	}
+
+	public void setIdEtapas(int idEtapas) {
+		this.idEtapas = idEtapas;
+	}
+
 	public EtapasReparacion(@NotNull String nombre) {
 		this.nombre = nombre;
 	}

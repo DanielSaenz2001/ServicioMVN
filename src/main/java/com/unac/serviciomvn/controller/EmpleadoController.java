@@ -21,7 +21,6 @@ import com.unac.serviciomvn.services.EmpleadoService;
 @RestController
 @RequestMapping("/empleado")
 @CrossOrigin(origins = "*")
-@SuppressWarnings({ "rawtypes", "unchecked" })
 public class EmpleadoController {
 	@Autowired
     EmpleadoService empleadoService;
@@ -74,7 +73,17 @@ public class EmpleadoController {
     	empleado.setEmail(empleadoModel.getEmail());
     	empleado.setTelefono(empleadoModel.getTelefono());
 		empleado.setIdUsuario(empleadoModel.getIdUsuario());
-		empleadoService.save(empleadoModel);
+		empleadoService.save(empleado);
+        return new ResponseEntity(empleadoModel, HttpStatus.OK);
+    }
+	@PutMapping("/update/empleado/{id}")
+    public ResponseEntity<?> updateEmpleado(@PathVariable("id")int id, @RequestBody Empleado empleadoModel){
+    	if(!empleadoService.existsById(id))
+            return new ResponseEntity(new Mensaje("No existe nadie con ese ID"), HttpStatus.NOT_FOUND);
+    	Empleado empleado = empleadoService.getOne(id).get();
+    	empleado.setTelefono(empleadoModel.getTelefono());
+		empleadoService.save(empleado);
+		
         return new ResponseEntity(empleadoModel, HttpStatus.OK);
     }
 	@PostMapping("/filtrar")

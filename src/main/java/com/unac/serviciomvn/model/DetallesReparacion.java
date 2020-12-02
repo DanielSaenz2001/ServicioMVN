@@ -41,7 +41,7 @@ public class DetallesReparacion implements Serializable{
 	@Column(name = "tiempo_reparacion",nullable = true)       
     private Date tiempoReparacion;
 	
-	@Column(name = "confirnar_reparacion",nullable = true)       
+	@Column(name = "confirmar_reparacion",nullable = true)       
     private boolean confirmarReparacion;
 	
 	@JoinColumn(name = "id_empleado", referencedColumnName = "id_empleado",columnDefinition="integer")
@@ -60,7 +60,7 @@ public class DetallesReparacion implements Serializable{
 	
 	@JoinColumn(name = "id_vehiculo_reparacion", referencedColumnName = "id_vehiculo_reparacion")
 	@ManyToOne(optional = false)
-    private VehiculoReparacion idVehiculoReparacion;
+    private VehiculoReparacion idVehiculoReparacionDetalle;
 
 	
 	
@@ -68,11 +68,13 @@ public class DetallesReparacion implements Serializable{
 	@JsonIgnore
 	private Collection<ServicioReparacion> servicioCollection;
 
-
+	public DetallesReparacion() {
+	}
 
 	public DetallesReparacion(Date fechaInicio, Date fechaFin, Date tiempoReparacion, boolean confirmarReparacion,
 			Empleado idEmpleadoDetalle, Propietario idPropietarioDetalle, EtapasReparacion idEtapaReparacion,
-			VehiculoReparacion idVehiculoReparacion) {
+			VehiculoReparacion idVehiculoReparacionDetalle) {
+		super();
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
 		this.tiempoReparacion = tiempoReparacion;
@@ -80,116 +82,79 @@ public class DetallesReparacion implements Serializable{
 		this.idEmpleadoDetalle = idEmpleadoDetalle;
 		this.idPropietarioDetalle = idPropietarioDetalle;
 		this.idEtapaReparacion = idEtapaReparacion;
-		this.idVehiculoReparacion = idVehiculoReparacion;
+		this.idVehiculoReparacionDetalle = idVehiculoReparacionDetalle;
 	}
-
-
 
 	public int getIdDetalles() {
 		return idDetalles;
 	}
 
-
-
 	public void setIdDetalles(int idDetalles) {
 		this.idDetalles = idDetalles;
 	}
-
-
 
 	public Date getFechaInicio() {
 		return fechaInicio;
 	}
 
-
-
 	public void setFechaInicio(Date fechaInicio) {
 		this.fechaInicio = fechaInicio;
 	}
-
-
 
 	public Date getFechaFin() {
 		return fechaFin;
 	}
 
-
-
 	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
 	}
-
-
 
 	public Date getTiempoReparacion() {
 		return tiempoReparacion;
 	}
 
-
-
 	public void setTiempoReparacion(Date tiempoReparacion) {
 		this.tiempoReparacion = tiempoReparacion;
 	}
-
-
 
 	public boolean isConfirmarReparacion() {
 		return confirmarReparacion;
 	}
 
-
-
 	public void setConfirmarReparacion(boolean confirmarReparacion) {
 		this.confirmarReparacion = confirmarReparacion;
 	}
-
-
 
 	public Empleado getIdEmpleadoDetalle() {
 		return idEmpleadoDetalle;
 	}
 
-
-
 	public void setIdEmpleadoDetalle(Empleado idEmpleadoDetalle) {
 		this.idEmpleadoDetalle = idEmpleadoDetalle;
 	}
-
-
 
 	public Propietario getIdPropietarioDetalle() {
 		return idPropietarioDetalle;
 	}
 
-
-
 	public void setIdPropietarioDetalle(Propietario idPropietarioDetalle) {
 		this.idPropietarioDetalle = idPropietarioDetalle;
 	}
-
-
 
 	public EtapasReparacion getIdEtapaReparacion() {
 		return idEtapaReparacion;
 	}
 
-
-
 	public void setIdEtapaReparacion(EtapasReparacion idEtapaReparacion) {
 		this.idEtapaReparacion = idEtapaReparacion;
 	}
 
-
-
-	public VehiculoReparacion getIdVehiculoReparacion() {
-		return idVehiculoReparacion;
+	public VehiculoReparacion getIdVehiculoReparacionDetalle() {
+		return idVehiculoReparacionDetalle;
 	}
 
-
-
-	public void setIdVehiculoReparacion(VehiculoReparacion idVehiculoReparacion) {
-		this.idVehiculoReparacion = idVehiculoReparacion;
+	public void setIdVehiculoReparacionDetalle(VehiculoReparacion idVehiculoReparacionDetalle) {
+		this.idVehiculoReparacionDetalle = idVehiculoReparacionDetalle;
 	}
-	
-	
+
 }

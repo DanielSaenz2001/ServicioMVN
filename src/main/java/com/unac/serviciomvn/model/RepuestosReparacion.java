@@ -44,7 +44,8 @@ public class RepuestosReparacion implements Serializable {
 	 @JsonIgnore
 	 private Collection<ServicioRepuestos> costoCollection;
 
-	
+	 public RepuestosReparacion() {
+	}
 	public RepuestosReparacion(@NotNull String nombre,  @NotNull double precio) {
 		this.nombre = nombre;
 		this.precio = precio;

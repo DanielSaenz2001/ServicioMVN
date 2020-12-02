@@ -2,6 +2,7 @@ package com.unac.serviciomvn.security.controller;
 
 import com.unac.serviciomvn.dto.Mensaje;
 import com.unac.serviciomvn.model.Empleado;
+import com.unac.serviciomvn.model.Propietario;
 import com.unac.serviciomvn.security.dto.JwtDto;
 import com.unac.serviciomvn.security.dto.LoginUsuario;
 import com.unac.serviciomvn.security.dto.NuevoUsuario;
@@ -12,7 +13,7 @@ import com.unac.serviciomvn.security.jwt.JwtProvider;
 import com.unac.serviciomvn.security.service.RolService;
 import com.unac.serviciomvn.security.service.UsuarioService;
 import com.unac.serviciomvn.services.EmpleadoService;
-
+import com.unac.serviciomvn.services.PropietarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,6 @@ import java.util.Set;
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "*")
-@SuppressWarnings({ "rawtypes", "unchecked" })
 public class AuthController {
 
     @Autowired
@@ -50,6 +50,9 @@ public class AuthController {
     
     @Autowired
     EmpleadoService empleadoService;
+    
+    @Autowired
+    PropietarioService propietarioService;
 
     @Autowired
     RolService rolService;
@@ -123,6 +126,15 @@ public class AuthController {
             return new ResponseEntity(new Mensaje("Usted no tiene permiso para entrar al sistema gracias."), HttpStatus.NOT_FOUND);
     	Empleado empleado = empleadoService.getEmpleadoById(empleadoModel.getIdUsuario());
     	return new ResponseEntity(empleado, HttpStatus.OK);
+    	
+    }
+    @PostMapping("/propietario")
+    public ResponseEntity<?> propietario(@RequestBody Propietario propietarioModel){
+    	
+    	if(!propietarioService.existsByPropietario(propietarioModel.getIdUsuario()))
+            return new ResponseEntity(new Mensaje("Usted no tiene permiso para entrar al sistema gracias."), HttpStatus.NOT_FOUND);
+    	Propietario propietario = propietarioService.getPropietarioById(propietarioModel.getIdUsuario());
+    	return new ResponseEntity(propietario, HttpStatus.OK);
     	
     }
     public Integer userID() {

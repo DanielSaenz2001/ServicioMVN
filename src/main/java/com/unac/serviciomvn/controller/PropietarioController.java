@@ -80,6 +80,20 @@ public class PropietarioController {
     	
         return new ResponseEntity(propietario, HttpStatus.OK);
     }
+	
+	
+	@PutMapping("/update/invitado/{id}")
+    public ResponseEntity<?> updateInivtado(@PathVariable("id")int id, @RequestBody Propietario propietarioModel){
+    	if(!propietarioService.existsById(id))
+            return new ResponseEntity(new Mensaje("No existe nadie con ese ID"), HttpStatus.NOT_FOUND);
+    	Propietario propietario = propietarioService.getOne(id).get();
+    	propietario.setTelefono(propietarioModel.getTelefono());
+    	propietarioService.save(propietario);
+    	
+        return new ResponseEntity(propietario, HttpStatus.OK);
+    }
+	
+	
 	@PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody Propietario propietario){
 

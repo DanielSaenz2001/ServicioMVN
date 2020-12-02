@@ -39,18 +39,17 @@ public class VehiculoReparacion implements Serializable{
     @Column(name = "fecha_salida",nullable = true)       
     private Date fechaSalida;
 	
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "fase")       
+
+    @Column(name = "fase",nullable = true)       
     private String fase;
     
 	@JoinColumn(name = "id_propietario", referencedColumnName = "id_propietario",columnDefinition="integer")
     @ManyToOne
     private Propietario idPropietarioFactura;
 	
-	@NotNull
+	@Null
 	@JoinColumn(name = "id_vehiculo", referencedColumnName = "id_vehiculo")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Vehiculo idVehiculoFactura;
 	
 	
@@ -58,17 +57,28 @@ public class VehiculoReparacion implements Serializable{
     @ManyToOne
     private Empleado idEmpleadoFactura;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "idVehiculoReparacion")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "idVehiculoReparacionDetalle")
 	@JsonIgnore
 	private Collection<DetallesReparacion> DetallesReparacionCollection;
-
+	
+	public VehiculoReparacion() {
+	}
 	public VehiculoReparacion(@Null double precioTotal, @Null Date fechaSalida, @Null Propietario idPropietarioFactura,
-			@NotNull Vehiculo idVehiculoFactura, @Null Empleado idEmpleadoFactura) {
+			@Null Vehiculo idVehiculoFactura, @Null Empleado idEmpleadoFactura, @NotNull String fase) {
 		this.precioTotal = precioTotal;
 		this.fechaSalida = fechaSalida;
 		this.idPropietarioFactura = idPropietarioFactura;
 		this.idVehiculoFactura = idVehiculoFactura;
 		this.idEmpleadoFactura = idEmpleadoFactura;
+		this.fase = fase;
+	}
+
+	public String getFase() {
+		return fase;
+	}
+
+	public void setFase(String fase) {
+		this.fase = fase;
 	}
 
 	public int getIdVehiculoReparacion() {

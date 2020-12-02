@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@SuppressWarnings({"serial","unused"})
 public class UsuarioPrincipal implements UserDetails {
     private String nombreUsuario;
     private String password;
